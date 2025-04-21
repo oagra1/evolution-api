@@ -4,184 +4,47 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_CONNECTION_URI")
+  url      = env("DATABASE_URL")
 }
 
 model Instance {
-  id        String   @id @default(uuid())
-  name      String
-  phone     String
-  status    String
-  webhook   String?
-  token     String?
-  number    String?
-  clientName String?
-  connectionStatus String?
-  ownerJid  String?
-  businessId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Session             Session[]
-  Contact             Contact[]
-  Chat                Chat[]
-  Message             Message[]
-  MessageUpdate       MessageUpdate[]
-  Webhook             Webhook[]
-  Template            Template[]
-  IntegrationSession  IntegrationSession[]
-  Typebot             Typebot[]
-  Chatwoot            Chatwoot[]
-  Proxy               Proxy?
-  Setting             Setting?
-  Label               Label[]
-  OpenaiBot           OpenaiBot[]
-  Dify                Dify[]
-  EvolutionBot        EvolutionBot[]
-  Flowise             Flowise[]
-}
-
-model Session {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  data       Json
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Contact {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  name       String
-  phone      String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Chat {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  name       String
-  messages   Message[]
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id             String           @id @default(uuid())
+  name           String
+  phone          String
+  webhook        String
+  Message        Message[]
+  MessageUpdate  MessageUpdate[]
+  Webhook        Webhook[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
 
 model Message {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  chatId     String
-  sender     String
+  id         String    @id @default(uuid())
   content    String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  chatId     String
+  chat       Chat      @relation(fields: [chatId], references: [id])
+  instanceId String
+  instance   Instance  @relation(fields: [instanceId], references: [id])
 }
 
 model MessageUpdate {
-  id         String   @id @default(uuid())
-  messageId  String
-  updated    Boolean
-  createdAt  DateTime @default(now())
+  id         String    @id @default(uuid())
+  content    String
+  instanceId String
+  instance   Instance  @relation(fields: [instanceId], references: [id])
 }
 
 model Webhook {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
+  id         String    @id @default(uuid())
   url        String
-  event      String
-  createdAt  DateTime @default(now())
+  instanceId String
+  instance   Instance  @relation(fields: [instanceId], references: [id])
 }
 
-model Template {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
+model Chat {
+  id         String    @id @default(uuid())
   name       String
-  content    String
-  createdAt  DateTime @default(now())
-}
-
-model IntegrationSession {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  provider   String
-  data       Json
-  createdAt  DateTime @default(now())
-}
-
-model Typebot {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  config     Json
-  createdAt  DateTime @default(now())
-}
-
-model Chatwoot {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  contactId  String
-  createdAt  DateTime @default(now())
-}
-
-model Proxy {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  host       String
-  port       Int
-  createdAt  DateTime @default(now())
-}
-
-model Setting {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  config     Json
-  createdAt  DateTime @default(now())
-}
-
-model Label {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  name       String
-  createdAt  DateTime @default(now())
-}
-
-model OpenaiBot {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  model      String
-  creds      Json
-  setting    Json
-}
-
-model Dify {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  setting    Json
-}
-
-model EvolutionBot {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  setting    Json
-}
-
-model Flowise {
-  id         String   @id @default(uuid())
-  instance   Instance @relation(fields: [instanceId], references: [id])
-  instanceId String
-  setting    Json
+  messages   Message[]
+  createdAt  DateTime  @default(now())
 }
