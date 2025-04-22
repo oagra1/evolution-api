@@ -1,28 +1,30 @@
 {
   "name": "evolution-api",
   "version": "2.1.2",
-  "description": "Evolution API WhatsApp",
-  "main": "dist/main.js",
+  "description": "API for Evolution WhatsApp Bot",
+  "main": "dist/index.js",
   "scripts": {
-    "dev": "tsnd -r tsconfig-paths/register --files --transpile-only ./src/main.ts",
-    "start": "npm run start:prod",
-    "start:prod": "node dist/main.js",
-    "build": "tsup ./src/main.ts --format esm,cjs --target esnext --dts --outDir dist --clean"
+    "dev": "tsup src/index.ts --watch",
+    "build": "tsup src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext .ts,.tsx"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.12.0",
-    "axios": "^1.6.8",
-    "chalk": "^5.3.0",
-    "dotenv": "^16.4.5",
-    "express": "^4.18.3"
-    // adicione aqui os outros pacotes que o projeto realmente usa
+    "@adiwajshing/baileys": "^6.7.0",
+    "axios": "^1.6.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.3",
+    "pino": "^8.14.1",
+    "qrcode-terminal": "^0.12.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.11.18",
+    "eslint": "^8.56.0",
     "tsup": "^7.2.0",
-    "typescript": "^5.3.3",
-    "tsconfig-paths": "^4.2.0"
+    "typescript": "^5.3.3"
   }
 }
