@@ -2,21 +2,29 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "CommonJS",
-    "moduleResolution": "Node",
+    "moduleResolution": "node",
     "outDir": "dist",
-    "baseUrl": "./src",
+    "rootDir": "src",
+    "baseUrl": "src",
     "paths": {
       "@api/*": ["api/*"],
+      "@cache/*": ["cache/*"],
       "@config/*": ["config/*"],
-      "@validate/*": ["validate/*"]
+      "@utils/*": ["utils/*"],
+      "@validate/*": ["validate/*"],
+      "@dto/*": ["api/dto/*"],
+      "@guards/*": ["api/guards/*"],
+      "@integrations/*": ["api/integrations/*"],
+      "@repository/*": ["api/repository/*"]
     },
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
+    "strict": true,
+    "noImplicitAny": false,
     "esModuleInterop": true,
-    "resolveJsonModule": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": true
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "resolveJsonModule": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
