@@ -1,17 +1,16 @@
-FROM node:18-alpine
+FROM node:20-alpine
+
+# Instala git e outras dependências básicas
+RUN apk add --no-cache git python3 make g++ bash
 
 WORKDIR /app
 
-RUN apk add --no-cache git
-
-COPY . .
+COPY package*.json ./
 
 RUN npm install
 
-RUN npx prisma generate
+COPY . .
 
 RUN npm run build
 
-EXPOSE 8080
-
-CMD ["npm", "run", "start:prod"]
+CMD ["npm", "start"]
