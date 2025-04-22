@@ -1,19 +1,13 @@
-import { cpSync } from 'node:fs';
+// tsup.config.ts
 
-import { defineConfig } from 'tsup';
+import { defineConfig } from 'tsup'
 
 export default defineConfig({
-  entry: ['src'],
-  outDir: 'dist',
+  entry: ['src/index.ts'],
+  format: ['cjs', 'esm'],
   splitting: false,
   sourcemap: true,
   clean: true,
-  minify: true,
-  format: ['cjs', 'esm'],
-  onSuccess: async () => {
-    cpSync('src/utils/translations', 'dist/translations', { recursive: true });
-  },
-  loader: {
-    '.json': 'file',
-  },
-});
+  dts: true,
+  external: ['baileys'] // Isso garante que a lib baileys não quebre o build
+})
