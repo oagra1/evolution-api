@@ -1,36 +1,38 @@
 # Etapa de build
 FROM node:20-alpine AS builder
 
-# Instala dependências essenciais, incluindo git e python para alguns builds nativos
+# Instala dependências necessárias para compilar pacotes nativos e resolver erro ENOENT (git)
 RUN apk add --no-cache git python3 make g++
 
+# Define o diretório de trabalho
 WORKDIR /app
 
-# Copia package.json e package-lock.json (ou yarn.lock) para instalar dependências
+# Copia os arquivos de dependência
 COPY package*.json ./
 
-# Instala dependências
+# Instala as dependências
 RUN npm install
 
-# Copia o restante do código para o container
+# Copia o restante da aplicação
 COPY . .
 
-# Compila o projeto (se necessário)
+# Compila o projeto TypeScript
 RUN npm run build
 
-# Etapa de produção
+# Etapa final
 FROM node:20-alpine
 
-# Instala apenas o necessário para rodar
-RUN apk add --no-cache dumb-init
-
+# Cria diretório
 WORKDIR /app
 
-# Copia os arquivos compilados da etapa de build
+# Copia apenas o resultado do build
 COPY --from=builder /app /app
 
-# Porta padrão da aplicação
+# Define variável de ambiente (opcional)
+ENV NODE_ENV=production
+
+# Expõe a porta
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
-CMD ["dumb-init", "node", "dist/index.js"]
+# Comando final
+CMD ["node", "dist/index.js"]
