@@ -5,6 +5,7 @@
     "rootDir": "./src",
     "outDir": "./dist",
     "strict": true,
+    "noImplicitAny": false,
     "strictPropertyInitialization": false,
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -16,7 +17,15 @@
       "@config/*": ["config/*"],
       "@utils/*": ["utils/*"],
       "@cache/*": ["cache/*"],
-      "@validate/*": ["validate/*"]
+      "@validate/*": ["validate/*"],
+      "@exceptions": ["exceptions/index.ts"],
+      "@guards/*": ["guards/*"],
+      "@dto/*": ["dto/*"],
+      "@services/*": ["services/*"],
+      "@controllers/*": ["controllers/*"],
+      "@middlewares/*": ["middlewares/*"],
+      "@types/*": ["types/*"],
+      "@prisma/client": ["../node_modules/@prisma/client"]
     }
   },
   "include": ["src"],
