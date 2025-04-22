@@ -7,31 +7,33 @@ RUN apk add --no-cache git python3 make g++
 # Define diretório de trabalho
 WORKDIR /app
 
-# Copia apenas o necessário para instalar dependências
+# Copia os arquivos necessários para instalar dependências
 COPY package*.json ./
+COPY tsconfig.json ./
+COPY tsup.config.ts ./
 
 # Instala dependências
 RUN npm install
 
-# Copia o restante dos arquivos
+# Copia o restante do código-fonte
 COPY . .
 
-# Gera os arquivos de build
+# Realiza o build (typescript + tsup com paths)
 RUN npm run build
 
 # Etapa 2: imagem final para produção
 FROM node:20-alpine
 
-# Cria diretório
+# Define diretório da aplicação
 WORKDIR /app
 
-# Copia apenas os arquivos compilados da etapa anterior
+# Copia arquivos do build da etapa anterior
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/package*.json ./
 
-# Expõe a porta (ajuste se necessário)
+# Exponha a porta usada pela aplicação
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
+# Inicia a aplicação
 CMD ["node", "dist/index.js"]
