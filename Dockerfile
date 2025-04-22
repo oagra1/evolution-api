@@ -1,35 +1,38 @@
-# Etapa de build
+# Etapa 1: Build
 FROM node:20-alpine AS builder
 
-# Instala dependências para build de pacotes nativos
+# Instala dependências de build
 RUN apk add --no-cache git python3 make g++
 
-# Define diretório de trabalho
+# Cria diretório da app
 WORKDIR /app
 
-# Copia arquivos de dependência
+# Copia apenas os arquivos de dependência primeiro
 COPY package*.json ./
 
-# Instala dependências com devDependencies
+# Instala dependências (inclusive as que exigem git)
 RUN npm install
 
-# Copia todo o projeto
+# Copia o restante da aplicação
 COPY . .
 
-# Compila o projeto
+# Gera os arquivos de build
 RUN npm run build
 
-# Etapa final de produção
+# Etapa 2: Produção
 FROM node:20-alpine
 
-# Define diretório de trabalho
 WORKDIR /app
 
-# Copia tudo da imagem anterior (já compilado)
-COPY --from=builder /app /app
+# Copia apenas os arquivos necessários da etapa anterior
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/prisma ./prisma  # necessário se estiver usando Prisma
+COPY --from=builder /app/.env .env        # necessário se estiver usando variáveis locais
 
-# Instala apenas as dependências de produção
-RUN npm install --omit=dev
+# Porta que será exposta (deve bater com o .listen(port) do seu app)
+ENV PORT=8080
+EXPOSE 8080
 
-# Define o comando de execução
 CMD ["node", "dist/index.js"]
