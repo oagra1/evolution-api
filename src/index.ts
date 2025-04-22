@@ -1,24 +1,25 @@
-import 'dotenv/config';
-import 'express-async-errors';
-import express from 'express';
+import express, { Request, Response } from 'express';
 import cors from 'cors';
-import compression from 'compression';
-import { PrismaClient } from '@prisma/client';
+import { router as indexRouter } from './api/routes/index.router';
 import { errorHandler } from './exceptions/handler';
-import routes from './api/routes/index.router';
 
 const app = express();
 const port = process.env.PORT || 8080;
-export const prisma = new PrismaClient();
 
 app.use(cors());
 app.use(express.json());
-app.use(compression());
 
-app.use('/api', routes);
+// ✅ Rota pública para EasyPanel detectar se o app está online
+app.get('/', (req: Request, res: Response) => {
+  res.send('🟢 Evolution API está rodando!');
+});
 
+// Rotas principais
+app.use('/api', indexRouter);
+
+// Tratamento de erros
 app.use(errorHandler);
 
 app.listen(port, () => {
-  console.log(`🔥 Server is running on http://localhost:${port}`);
+  console.log(`Evolution API rodando na porta ${port}`);
 });
