@@ -1,3 +1,5 @@
+RUN npm cache clean --force
+
 # Etapa de build
 FROM node:20-alpine AS builder
 
