@@ -1,13 +1,12 @@
-import { defineConfig } from 'tsup'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
+  format: ['cjs', 'esm'],
   target: 'es2020',
-  splitting: false,
   sourcemap: true,
+  dts: true, // Continua gerando tipos (agora sem erro)
   clean: true,
-  outDir: 'dist',
-  format: ['esm', 'cjs'],
-  external: ['baileys'],
-  dts: false // 🚫 desativa geração de .d.ts que estava causando erro
-})
+  splitting: false,
+  minify: false
+});
