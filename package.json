@@ -11,6 +11,7 @@
     "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
+    "tsconfig-paths": "^4.2.0"
     "@whiskeysockets/baileys": "6.6.0",
     "axios": "^1.6.7",
     "cors": "^2.8.5",
