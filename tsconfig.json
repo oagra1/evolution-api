@@ -1,31 +1,30 @@
 {
   "compilerOptions": {
     "target": "ES2020",
-    "module": "CommonJS",
-    "moduleResolution": "node",
-    "outDir": "dist",
+    "module": "commonjs",
+    "lib": ["ES2020"],
     "rootDir": "src",
-    "baseUrl": "src",
-    "paths": {
-      "@api/*": ["api/*"],
-      "@cache/*": ["cache/*"],
-      "@config/*": ["config/*"],
-      "@utils/*": ["utils/*"],
-      "@validate/*": ["validate/*"],
-      "@dto/*": ["api/dto/*"],
-      "@guards/*": ["api/guards/*"],
-      "@integrations/*": ["api/integrations/*"],
-      "@repository/*": ["api/repository/*"]
-    },
-    "strict": true,
-    "noImplicitAny": false,
+    "outDir": "dist",
+    "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "resolveJsonModule": true
+    "noImplicitAny": false,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@config": ["config"],
+      "@api": ["api"],
+      "@exceptions": ["exceptions"],
+      "@interfaces": ["interfaces"],
+      "@dto": ["api/dto"],
+      "@utils": ["utils"],
+      "@services": ["services"],
+      "@prisma": ["prisma"]
+    }
   },
-  "include": ["src"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }
