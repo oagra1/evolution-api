@@ -1,7 +1,20 @@
-import NodeCache from 'node-cache';
+// src/cache/cacheengine.ts
+export class CacheEngine {
+  private store: Map<string, unknown> = new Map();
 
-export const cache = new NodeCache({
-  stdTTL: 300,
-  checkperiod: 320,
-  useClones: false
-});
+  get(key: string) {
+    return this.store.get(key);
+  }
+
+  set(key: string, value: unknown) {
+    this.store.set(key, value);
+  }
+
+  delete(key: string) {
+    this.store.delete(key);
+  }
+
+  clear() {
+    this.store.clear();
+  }
+}
