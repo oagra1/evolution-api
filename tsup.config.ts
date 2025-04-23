@@ -1,12 +1,12 @@
-import { defineConfig } from 'tsup'
-import tsconfigPaths from 'esbuild-plugin-tsconfig-paths'
+import { defineConfig } from 'tsup';
 
 export default defineConfig({
   entry: ['src/index.ts'],
+  splitting: false,
   sourcemap: true,
   clean: true,
   dts: true,
-  format: ['esm', 'cjs'],
-  target: 'node20',
-  esbuildPlugins: [tsconfigPaths()]
-})
+  target: 'es2020',
+  format: ['cjs'],
+  outDir: 'dist'
+});
